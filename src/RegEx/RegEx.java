@@ -1,11 +1,13 @@
 package RegEx;
 
-import java.util.HashSet;
-import java.util.Scanner;
+import Automaton.DFAutomaton;
+import Automaton.NDFAutomaton;
 
+import java.lang.Exception;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.lang.Exception;
+import java.util.HashSet;
+import java.util.Scanner;
 
 public class RegEx {
     //MACROS
@@ -371,12 +373,19 @@ public class RegEx {
     public static DFAutomaton NDFAutomatonToDFAutomaton(NDFAutomaton ndfAutomaton) {
         HashSet<Integer> importantStates = new HashSet<>();
 
+        // Define important states
+        importantStates.add(0);
         for (int i = 0; i < ndfAutomaton.automatonTransition.length; i++) {
             for (int j = 0; j < ndfAutomaton.automatonTransition[i].length; j++) {
                 if (ndfAutomaton.automatonTransition[i][j] != -1) {
+                    importantStates.add(ndfAutomaton.automatonTransition[i][j]);
                 }
             }
         }
+
+        ArrayList<HashSet<Integer>> epsilonReachable = new ArrayList<>();
+        // DFS to find states reachable through epsilon transition
+
 
         return null;
     }
@@ -406,45 +415,33 @@ class RegExTree {
     }
 }
 
-class NDFAutomaton {
-    protected int[][] automatonTransition;
-    protected ArrayList<ArrayList<Integer>> epsilonTransition;
-
-    public NDFAutomaton(int[][] automatonTransition, ArrayList<ArrayList<Integer>> epsilonTransition) {
-        this.automatonTransition = automatonTransition;
-        this.epsilonTransition = epsilonTransition;
-    }
-
-    public int size() {
-        return automatonTransition.length;
-    }
-
-    public String toString() {
-        String automaton = "Initial state: 0\nFinal state: " + (automatonTransition.length - 1) + "\nTransition list:\n";
-        for (int i = 0; i < epsilonTransition.size(); i++) {
-            if (!epsilonTransition.get(i).isEmpty()) {
-                automaton += "  " + i + " -- epsilon --> " + epsilonTransition.get(i) + "\n";
-            }
-        }
-        for (int i = 0; i < automatonTransition.length; i++) {
-            for (int j = 0; j < automatonTransition[i].length; j++) {
-                if (automatonTransition[i][j] != -1) {
-                    automaton += "  " + i + " -- " + (char) j + " --> " + automatonTransition[i][j] + "\n";
-                }
-            }
-        }
-        return automaton;
-    }
-}
-
-class DFAutomaton {
-    protected int[][] transitions;
-
-    public DFAutomaton(int[][] transitions) {
-        this.transitions = transitions;
-    }
-
-    public int size() {
-        return transitions.length;
-    }
-}
+//class NDFAutomaton {
+//    protected int[][] automatonTransition;
+//    protected ArrayList<ArrayList<Integer>> epsilonTransition;
+//
+//    public NDFAutomaton(int[][] automatonTransition, ArrayList<ArrayList<Integer>> epsilonTransition) {
+//        this.automatonTransition = automatonTransition;
+//        this.epsilonTransition = epsilonTransition;
+//    }
+//
+//    public int size() {
+//        return automatonTransition.length;
+//    }
+//
+//    public String toString() {
+//        String automaton = "Initial state: 0\nFinal state: " + (automatonTransition.length - 1) + "\nTransition list:\n";
+//        for (int i = 0; i < epsilonTransition.size(); i++) {
+//            if (!epsilonTransition.get(i).isEmpty()) {
+//                automaton += "  " + i + " -- epsilon --> " + epsilonTransition.get(i) + "\n";
+//            }
+//        }
+//        for (int i = 0; i < automatonTransition.length; i++) {
+//            for (int j = 0; j < automatonTransition[i].length; j++) {
+//                if (automatonTransition[i][j] != -1) {
+//                    automaton += "  " + i + " -- " + (char) j + " --> " + automatonTransition[i][j] + "\n";
+//                }
+//            }
+//        }
+//        return automaton;
+//    }
+//}
