@@ -1,6 +1,7 @@
 import java.util.Scanner;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.lang.Exception;
 
 public class RegEx {
@@ -223,6 +224,30 @@ public class RegEx {
     subTrees.add(dotBCEtoile);
     return new RegExTree(ALTERN, subTrees);
   }
+
+  public static NDFAutomaton RegExTreeToNDFAutomaton(RegExTree regExTree) {
+    if (regExTree.subTrees.isEmpty()) {
+      int[][] automataTransition = new int[2][256];
+      ArrayList<ArrayList<Integer>> epsilonTransition = new ArrayList<ArrayList<Integer>>();
+
+      for (int i = 0; i < automataTransition.length; i++) {
+        Arrays.fill(automataTransition[i], -1);
+      }
+
+      for (int i = 0; i < 2; i++) {
+        epsilonTransition.add(new ArrayList<Integer>());
+      }
+      
+      if (regExTree.root != DOT) {
+        automataTransition[0][regExTree.root] = 1;
+      }
+      else {
+        Arrays.fill(automataTransition[0], 1);
+      }
+
+      return new NDFAutomaton(automataTransition, epsilonTransition);
+    }
+  }
 }
 
 //UTILITARY CLASS
@@ -247,22 +272,15 @@ class RegExTree {
     if (root==RegEx.DOT) return ".";
     return Character.toString((char)root);
   }
+}
 
-  class NDFA {
-    protected ArrayList<ArrayList<ArrayList<Integer>>> automataMatrix;
-    protected int size;
-    
-    public void RegExTreeToNDFA(RegExTree regExTree) {
-      size = 2;
-      automataMatrix.add(new ArrayList<ArrayList<Integer>>(260));
-      automataMatrix.add(new ArrayList<ArrayList<Integer>>(260));
-
-      // start
-      automataMatrix.get(0).get(257).add(1);
-      // end
-      automataMatrix.get(1).get(258).add(1);
-
-      // recursion on subtrees
-    }
+class NDFAutomaton {
+  protected int[][] automataTransition;
+  protected ArrayList<ArrayList<Integer>> epsilonTransition;
+  protected int size;
+  
+  public NDFAutomaton(int[][] automataTransition, ArrayList<ArrayList<Integer>> epsilonTransition) {
+    this.automataTransition = automataTransition;
+    this.epsilonTransition = epsilonTransition;
   }
 }
