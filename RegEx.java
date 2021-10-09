@@ -43,6 +43,9 @@ public class RegEx {
       try {
         RegExTree ret = parse();
         System.out.println("  >> Tree result: "+ret.toString()+".");
+        
+        NDFAutomaton ndfAutomaton = RegExTreeToNDFAutomaton(ret);
+        System.out.println(ndfAutomaton);
       } catch (Exception e) {
         System.err.println("  >> ERROR: syntax error for regEx \""+regEx+"\".");
       }
@@ -227,11 +230,12 @@ public class RegEx {
 
   public static NDFAutomaton RegExTreeToNDFAutomaton(RegExTree regExTree) {
     if (regExTree.subTrees.isEmpty()) {
-      int[][] automataTransition = new int[2][256];
+      System.out.println((char) regExTree.root);
+      int[][] automatonTransition = new int[2][256];
       ArrayList<ArrayList<Integer>> epsilonTransition = new ArrayList<ArrayList<Integer>>();
 
-      for (int i = 0; i < automataTransition.length; i++) {
-        Arrays.fill(automataTransition[i], -1);
+      for (int i = 0; i < automatonTransition.length; i++) {
+        Arrays.fill(automatonTransition[i], -1);
       }
 
       for (int i = 0; i < 2; i++) {
@@ -239,28 +243,29 @@ public class RegEx {
       }
       
       if (regExTree.root != DOT) {
-        automataTransition[0][regExTree.root] = 1;
+        automatonTransition[0][regExTree.root] = 1;
       }
       else {
-        Arrays.fill(automataTransition[0], 1);
+        Arrays.fill(automatonTransition[0], 1);
       }
 
-      return new NDFAutomaton(automataTransition, epsilonTransition);
+      return new NDFAutomaton(automatonTransition, epsilonTransition);
     }
 
     if (regExTree.root == CONCAT) {
+      System.out.println("concat");
       NDFAutomaton left = RegExTreeToNDFAutomaton(regExTree.subTrees.get(0));
       NDFAutomaton right = RegExTreeToNDFAutomaton(regExTree.subTrees.get(1));
-      int[][] automataTransition = new int[left.size() + right.size()][256];
+      int[][] automatonTransition = new int[left.size() + right.size()][256];
       ArrayList<ArrayList<Integer>> epsilonTransition = new ArrayList<ArrayList<Integer>>(left.epsilonTransition);
 
       for (int i = 0; i < left.size(); i++) {
-        automataTransition[i] = Arrays.copyOf(left.automataTransition[i], left.automataTransition[i].length);
+        automatonTransition[i] = Arrays.copyOf(left.automatonTransition[i], left.automatonTransition[i].length);
       }
       for (int i = 0; i < right.size(); i++) {
-        for (int j = 0; j < right.automataTransition[i].length; j++) {
-          automataTransition[left.size() + i][j] = (right.automataTransition[i][j] != -1)
-            ? right.automataTransition[i][j] + left.size()
+        for (int j = 0; j < right.automatonTransition[i].length; j++) {
+          automatonTransition[left.size() + i][j] = (right.automatonTransition[i][j] != -1)
+            ? right.automatonTransition[i][j] + left.size()
             : -1;
         }
       }
@@ -274,31 +279,36 @@ public class RegEx {
         epsilonTransition.add(newEpsilonFromNode);
       }
 
-      return new NDFAutomaton(automataTransition, epsilonTransition);
+      return new NDFAutomaton(automatonTransition, epsilonTransition);
     }
 
     if (regExTree.root == ALTERN) {
+      System.out.println("altern");
       NDFAutomaton left = RegExTreeToNDFAutomaton(regExTree.subTrees.get(0));
       NDFAutomaton right = RegExTreeToNDFAutomaton(regExTree.subTrees.get(1));
-      int[][] automataTransition = new int[left.size() + right.size() + 2][256];
+      int[][] automatonTransition = new int[left.size() + right.size() + 2][256];
       ArrayList<ArrayList<Integer>> epsilonTransition = new ArrayList<ArrayList<Integer>>();
 
-      // Add automata transition
+      // Add automaton transition
+      Arrays.fill(automatonTransition[0], -1);
+      Arrays.fill(automatonTransition[left.size() + right.size() + 1], -1);
       for (int i = 0; i < left.size(); i++) {
-        for (int j = 0; j < left.automataTransition[i].length; j++) {
-          automataTransition[1 + i][j] = (left.automataTransition[i][j] != -1) 
-            ? left.automataTransition[i][j] + 1 
+        for (int j = 0; j < left.automatonTransition[i].length; j++) {
+          automatonTransition[1 + i][j] = (left.automatonTransition[i][j] != -1) 
+            ? left.automatonTransition[i][j] + 1 
             : -1;
         }
       }
+      System.out.println("altern automata left done");
 
       for (int i = 0; i < right.size(); i++) {
-        for (int j = 0; j < right.automataTransition[i].length; j++) {
-          automataTransition[1 + left.size() + i][j] = (right.automataTransition[i][j] != -1) 
-            ? right.automataTransition[i][j] + left.size() + 1
+        for (int j = 0; j < right.automatonTransition[i].length; j++) {
+          automatonTransition[1 + left.size() + i][j] = (right.automatonTransition[i][j] != -1) 
+            ? right.automatonTransition[i][j] + left.size() + 1
             : -1;
         }
       }
+      System.out.println("altern automata right done");
 
       // Add epsilon transition
       epsilonTransition.add(new ArrayList<Integer>(Arrays.asList(1, left.size() + 1)));
@@ -311,6 +321,7 @@ public class RegEx {
         epsilonTransition.add(newEpsilonFromNode);
       }
       epsilonTransition.get(left.size()).add(left.size() + right.size() + 1);
+      System.out.println("altern epsilon left done");
 
       for (ArrayList<Integer> epsilonFromNode : right.epsilonTransition) {
         ArrayList<Integer> newEpsilonFromNode = new ArrayList<Integer>();
@@ -320,20 +331,25 @@ public class RegEx {
         epsilonTransition.add(newEpsilonFromNode);
       }
       epsilonTransition.get(left.size() + right.size()).add(left.size() + right.size() + 1);
+      System.out.println("altern epsilon right done");
 
-      return new NDFAutomaton(automataTransition, epsilonTransition);
+      System.out.println("altern end");
+      return new NDFAutomaton(automatonTransition, epsilonTransition);
     }
 
     if (regExTree.root == ETOILE) {
+      System.out.println("etoile");
       NDFAutomaton child = RegExTreeToNDFAutomaton(regExTree.subTrees.get(0));
-      int[][] automataTransition = new int[child.size() + 2][256];
+      int[][] automatonTransition = new int[child.size() + 2][256];
       ArrayList<ArrayList<Integer>> epsilonTransition = new ArrayList<ArrayList<Integer>>();
 
-      // Add automata transition
+      // Add automaton transition
+      Arrays.fill(automatonTransition[0], -1);
+      Arrays.fill(automatonTransition[child.size() + 1], -1);
       for (int i = 0; i < child.size(); i++) {
-        for (int j = 0; j < child.automataTransition[i].length; j++) {
-          automataTransition[1 + i][j] = (child.automataTransition[i][j] != -1) 
-            ? child.automataTransition[i][j] + 1 
+        for (int j = 0; j < child.automatonTransition[i].length; j++) {
+          automatonTransition[1 + i][j] = (child.automatonTransition[i][j] != -1) 
+            ? child.automatonTransition[i][j] + 1 
             : -1;
         }
       }
@@ -350,8 +366,10 @@ public class RegEx {
       }
       epsilonTransition.get(child.size()).add(1);
       epsilonTransition.get(child.size()).add(child.size() + 1);
+      epsilonTransition.add(new ArrayList<Integer>());
 
-      return new NDFAutomaton(automataTransition, epsilonTransition);
+      System.out.println("etoile end");
+      return new NDFAutomaton(automatonTransition, epsilonTransition);
     }
 
     return null;
@@ -383,15 +401,32 @@ class RegExTree {
 }
 
 class NDFAutomaton {
-  protected int[][] automataTransition;
+  protected int[][] automatonTransition;
   protected ArrayList<ArrayList<Integer>> epsilonTransition;
   
-  public NDFAutomaton(int[][] automataTransition, ArrayList<ArrayList<Integer>> epsilonTransition) {
-    this.automataTransition = automataTransition;
+  public NDFAutomaton(int[][] automatonTransition, ArrayList<ArrayList<Integer>> epsilonTransition) {
+    this.automatonTransition = automatonTransition;
     this.epsilonTransition = epsilonTransition;
   }
 
   public int size() {
-    return automataTransition.length;
+    return automatonTransition.length;
+  }
+
+  public String toString() {
+    String automaton = "Initial state: 0\nFinal state: " + (automatonTransition.length - 1) + "\nTransition list:\n";
+    for (int i = 0; i < epsilonTransition.size(); i++) {
+      if (!epsilonTransition.get(i).isEmpty()) {
+        automaton += "  " + i + " -- epsilon --> " + epsilonTransition.get(i) + "\n";
+      }
+    }
+    for (int i = 0; i < automatonTransition.length; i++) {
+      for (int j = 0; j < automatonTransition[i].length; j++) {
+        if (automatonTransition[i][j] != -1) {
+          automaton += "  " + i + " -- " + (char) j + " --> " + automatonTransition[i][j] + "\n";
+        }
+      }
+    }
+    return automaton;
   }
 }
