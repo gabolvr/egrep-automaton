@@ -323,6 +323,38 @@ public class RegEx {
 
       return new NDFAutomaton(automataTransition, epsilonTransition);
     }
+
+    if (regExTree.root == ETOILE) {
+      NDFAutomaton child = RegExTreeToNDFAutomaton(regExTree.subTrees.get(0));
+      int[][] automataTransition = new int[child.size() + 2][256];
+      ArrayList<ArrayList<Integer>> epsilonTransition = new ArrayList<ArrayList<Integer>>();
+
+      // Add automata transition
+      for (int i = 0; i < child.size(); i++) {
+        for (int j = 0; j < child.automataTransition[i].length; j++) {
+          automataTransition[1 + i][j] = (child.automataTransition[i][j] != -1) 
+            ? child.automataTransition[i][j] + 1 
+            : -1;
+        }
+      }
+
+      // Add epsilon transition
+      epsilonTransition.add(new ArrayList<Integer>(Arrays.asList(1, child.size() + 1)));
+
+      for (ArrayList<Integer> epsilonFromNode : child.epsilonTransition) {
+        ArrayList<Integer> newEpsilonFromNode = new ArrayList<Integer>();
+        for (Integer destination : epsilonFromNode) {
+          newEpsilonFromNode.add(destination + 1);
+        }
+        epsilonTransition.add(newEpsilonFromNode);
+      }
+      epsilonTransition.get(child.size()).add(1);
+      epsilonTransition.get(child.size()).add(child.size() + 1);
+
+      return new NDFAutomaton(automataTransition, epsilonTransition);
+    }
+
+    return null;
   }
 }
 
