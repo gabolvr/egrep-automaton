@@ -247,6 +247,35 @@ public class RegEx {
 
       return new NDFAutomaton(automataTransition, epsilonTransition);
     }
+
+    if (regExTree.root == CONCAT) {
+      NDFAutomaton left = RegExTreeToNDFAutomaton(regExTree.subTrees.get(0));
+      NDFAutomaton right = RegExTreeToNDFAutomaton(regExTree.subTrees.get(1));
+      int[][] automataTransition = new int[left.size() + right.size()][256];
+      ArrayList<ArrayList<Integer>> epsilonTransition = new ArrayList<ArrayList<Integer>>(left.epsilonTransition);
+
+      for (int i = 0; i < left.size(); i++) {
+        automataTransition[i] = Arrays.copyOf(left.automataTransition[i], left.automataTransition[i].length);
+      }
+      for (int i = 0; i < right.size(); i++) {
+        for (int j = 0; j < right.automataTransition[i].length; j++) {
+          automataTransition[left.size() + i][j] = (right.automataTransition[i][j] != -1)
+            ? right.automataTransition[i][j] + left.size()
+            : -1;
+        }
+      }
+
+      epsilonTransition.get(left.size() - 1).add(left.size());
+      for (ArrayList<Integer> epsilonFromNode : right.epsilonTransition) {
+        ArrayList<Integer> newEpsilonFromNode = new ArrayList<Integer>();
+        for (Integer destination : epsilonFromNode) {
+          newEpsilonFromNode.add(destination + left.size());
+        }
+        epsilonTransition.add(newEpsilonFromNode);
+      }
+
+      return new NDFAutomaton(automataTransition, epsilonTransition);
+    }
   }
 }
 
@@ -277,10 +306,13 @@ class RegExTree {
 class NDFAutomaton {
   protected int[][] automataTransition;
   protected ArrayList<ArrayList<Integer>> epsilonTransition;
-  protected int size;
   
   public NDFAutomaton(int[][] automataTransition, ArrayList<ArrayList<Integer>> epsilonTransition) {
     this.automataTransition = automataTransition;
     this.epsilonTransition = epsilonTransition;
+  }
+
+  public int size() {
+    return automataTransition.length;
   }
 }
