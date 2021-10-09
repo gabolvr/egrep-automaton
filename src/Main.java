@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 import Automaton.*;
 
 public class Main {
@@ -6,9 +8,16 @@ public class Main {
         String filePath;
 
         if (args.length != 2) {
-            System.out.print("Usage: egrep-automaton [pattern] [file ...]");
+            System.out.println("Usage: egrep-automaton [pattern] [file ...]");
             System.exit(0);
         }
+
+        // Scanner scanner = new Scanner(System.in);
+        // System.out.print("regEx: ");
+        // pattern = scanner.nextLine();
+        // System.out.print("File path: ");
+        // filePath = scanner.nextLine();
+        // scanner.close();
 
         pattern = args[0];
         filePath = args[1];
