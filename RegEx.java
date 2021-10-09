@@ -276,6 +276,53 @@ public class RegEx {
 
       return new NDFAutomaton(automataTransition, epsilonTransition);
     }
+
+    if (regExTree.root == ALTERN) {
+      NDFAutomaton left = RegExTreeToNDFAutomaton(regExTree.subTrees.get(0));
+      NDFAutomaton right = RegExTreeToNDFAutomaton(regExTree.subTrees.get(1));
+      int[][] automataTransition = new int[left.size() + right.size() + 2][256];
+      ArrayList<ArrayList<Integer>> epsilonTransition = new ArrayList<ArrayList<Integer>>();
+
+      // Add automata transition
+      for (int i = 0; i < left.size(); i++) {
+        for (int j = 0; j < left.automataTransition[i].length; j++) {
+          automataTransition[1 + i][j] = (left.automataTransition[i][j] != -1) 
+            ? left.automataTransition[i][j] + 1 
+            : -1;
+        }
+      }
+
+      for (int i = 0; i < right.size(); i++) {
+        for (int j = 0; j < right.automataTransition[i].length; j++) {
+          automataTransition[1 + left.size() + i][j] = (right.automataTransition[i][j] != -1) 
+            ? right.automataTransition[i][j] + left.size() + 1
+            : -1;
+        }
+      }
+
+      // Add epsilon transition
+      epsilonTransition.add(new ArrayList<Integer>(Arrays.asList(1, left.size() + 1)));
+      
+      for (ArrayList<Integer> epsilonFromNode : left.epsilonTransition) {
+        ArrayList<Integer> newEpsilonFromNode = new ArrayList<Integer>();
+        for (Integer destination : epsilonFromNode) {
+          newEpsilonFromNode.add(destination + 1);
+        }
+        epsilonTransition.add(newEpsilonFromNode);
+      }
+      epsilonTransition.get(left.size()).add(left.size() + right.size() + 1);
+
+      for (ArrayList<Integer> epsilonFromNode : right.epsilonTransition) {
+        ArrayList<Integer> newEpsilonFromNode = new ArrayList<Integer>();
+        for (Integer destination : epsilonFromNode) {
+          newEpsilonFromNode.add(destination + left.size() + 1);
+        }
+        epsilonTransition.add(newEpsilonFromNode);
+      }
+      epsilonTransition.get(left.size() + right.size()).add(left.size() + right.size() + 1);
+
+      return new NDFAutomaton(automataTransition, epsilonTransition);
+    }
   }
 }
 
