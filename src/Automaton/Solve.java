@@ -2,6 +2,7 @@ package Automaton;
 
 import Egrep.EgrepAutomaton;
 import RegEx.*;
+import Text.Text;
 
 public class Solve {
     public Solve(String pattern){
@@ -13,7 +14,7 @@ public class Solve {
             DFAutomaton dfAutomaton = new DFAutomaton(ndfAutomaton);
             System.out.println(dfAutomaton);
             EgrepAutomaton egrep = new EgrepAutomaton(dfAutomaton);
-            egrep.findPatternInLine("  state--Sargon and Merodach-baladan--Sennacherib's attempt");
+            egrep.findPatternInText(new Text("tests/babylon.txt"));
         } catch (Exception e) {
             System.out.println(e);
         }
