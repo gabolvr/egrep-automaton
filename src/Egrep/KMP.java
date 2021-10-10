@@ -1,4 +1,4 @@
-package KMP;
+package Egrep;
 
 import Text.Text;
 

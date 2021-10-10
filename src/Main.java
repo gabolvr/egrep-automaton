@@ -1,6 +1,6 @@
 // import java.util.Scanner;
 
-import Automaton.*;
+import Egrep.StringMatching;
 
 public class Main {
     public static void main(String args[]) {
@@ -22,13 +22,11 @@ public class Main {
         // filePath = scanner.nextLine();
         // scanner.close();
 
-        
-
         // pattern = "(egrep)";
         // filePath = "src/Tests/56667-0.txt";
         // filePath = "src/Tests/manual.txt";
 
-        StringMatching test = new StringMatching(pattern, filePath);
-        test.match();
+        StringMatching solve = new StringMatching(pattern, filePath);
+        solve.match();
       }
 }

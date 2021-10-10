@@ -1,6 +1,5 @@
 package Egrep;
 
-import Automaton.DFAutomaton;
 import Text.Text;
 
 public class EgrepAutomaton {

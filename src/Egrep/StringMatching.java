@@ -1,7 +1,5 @@
-package Automaton;
+package Egrep;
 
-import Egrep.EgrepAutomaton;
-import KMP.KMP;
 import RegEx.*;
 import Text.Text;
 

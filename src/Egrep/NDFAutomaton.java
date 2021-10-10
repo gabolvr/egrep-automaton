@@ -1,8 +1,9 @@
-package Automaton;
+package Egrep;
 
 import RegEx.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 public class NDFAutomaton {
     public int[][] automatonTransition;
     public ArrayList<ArrayList<Integer>> epsilonTransition;
