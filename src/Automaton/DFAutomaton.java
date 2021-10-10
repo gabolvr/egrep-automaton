@@ -3,8 +3,8 @@ package Automaton;
 import java.util.*;
 
 public class DFAutomaton {
-    protected int[][] transitions;
-    protected HashSet<Integer> acceptingStates;
+    public int[][] transitions;
+    public HashSet<Integer> acceptingStates;
 
     public DFAutomaton(int[][] transitions, HashSet<Integer> acceptingStates) {
         this.transitions = transitions;
