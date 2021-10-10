@@ -20,12 +20,16 @@
     </target>
  
     <target name="dist" depends="compile" description="generate the distribution">
-        <buildnumber />
         <!-- Create the distribution directory -->
         <mkdir dir="${dist}" />
  
         <!-- Put everything in ${bin} into the {dist}/egrep-automaton.jar -->
-        <jar destfile="${dist}/egrep-automaton.jar" basedir="${bin}" />
+        <jar destfile="${dist}/egrep-automaton.jar" basedir="${bin}" >
+            <manifest>
+                <attribute name="Class-Path" value="egrep-automaton.jar" />
+                <attribute name="Main-Class" value="Main" />
+            </manifest>
+        </jar>
     </target>
  
     <target name="clean" description="clean up">
