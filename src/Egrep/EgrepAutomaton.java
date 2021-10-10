@@ -3,10 +3,6 @@ package Egrep;
 import Automaton.DFAutomaton;
 import Text.Text;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-
 public class EgrepAutomaton {
     public DFAutomaton dfAutomaton;
 
