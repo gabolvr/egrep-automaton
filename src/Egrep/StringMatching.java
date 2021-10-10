@@ -25,9 +25,9 @@ public class StringMatching {
         match(false);
     }
 
-    public void match(boolean kmp) {
+    public void match(boolean DFA) {
         Egrep egrep;
-        if (kmp) {
+        if (method() == 2 && !DFA) {
             egrep = new EgrepKMP(pattern);
         } else {
             NDFAutomaton ndfAutomaton = new NDFAutomaton(regEx);
@@ -37,10 +37,10 @@ public class StringMatching {
         egrep.findPatternInText(text);
     }
 
-//    private int method(){
-//        if(pattern.contains("(") || pattern.contains(")") || pattern.contains("*") || pattern.contains(".") ||
-//        pattern.contains("|"))
-//            return 1;
-//        return 2;
-//    }
+   private int method(){
+       if(pattern.contains("(") || pattern.contains(")") || pattern.contains("*") || pattern.contains(".") ||
+       pattern.contains("|"))
+           return 1;
+       return 2;
+   }
 }

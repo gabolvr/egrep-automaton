@@ -6,15 +6,22 @@ public class Main {
     public static void main(String args[]) {
         String pattern;
         String filePath;
+        boolean DFA = false;
 
-        if (args.length != 2) {
-            System.out.println("Usage: egrep-automaton [pattern] [file ...]");
+        if ((args.length != 3 && args.length != 2) || (args.length == 3 && !args[0].equals("-DFA"))) {
+            System.out.println("Usage: egrep-automaton [-DFA] [pattern] [file ...]");
+            System.out.println("     -DFA --> DFA only mode");
             System.exit(0);
         }
 
-        pattern = args[0];
-        filePath = args[1];
-
+        if (args.length == 3 && args[0].equals("-DFA")){
+            pattern = args[1];
+            filePath = args[2];
+            DFA = true;
+        } else{
+            pattern = args[0];
+            filePath = args[1];
+        }
         // Scanner scanner = new Scanner(System.in);
         // System.out.print("regEx: ");
         // pattern = scanner.nextLine();
@@ -26,9 +33,8 @@ public class Main {
         // filePath = "src/Tests/56667-0.txt";
         // filePath = "src/Tests/manual.txt";
 
-        boolean kmp = false;
 
         StringMatching solve = new StringMatching(pattern, filePath);
-        solve.match();
+        solve.match(DFA);
       }
 }
