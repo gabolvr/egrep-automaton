@@ -1,4 +1,4 @@
-package Egrep;
+package Automaton;
 
 import RegEx.*;
 import java.util.ArrayList;

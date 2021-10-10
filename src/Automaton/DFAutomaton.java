@@ -1,4 +1,4 @@
-package Egrep;
+package Automaton;
 
 import java.util.*;
 

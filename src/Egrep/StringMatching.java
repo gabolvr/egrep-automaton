@@ -1,5 +1,7 @@
 package Egrep;
 
+import Automaton.DFAutomaton;
+import Automaton.NDFAutomaton;
 import RegEx.*;
 import Text.Text;
 
@@ -8,10 +10,10 @@ public class StringMatching {
     private RegExTree regEx;
     private String pattern;
 
-    public StringMatching(String pattern, String filepath){
+    public StringMatching(String pattern, String filepath) {
         this.pattern = pattern;
         text = new Text(filepath);
-        try{
+        try {
             regEx = RegEx.parse(pattern);
         } catch (Exception e) {
             System.out.println(e);
@@ -19,26 +21,26 @@ public class StringMatching {
         }
     }
 
-    public void match(){
-        switch(method()){
-            case 1: // war machine
-                NDFAutomaton ndfAutomaton = new NDFAutomaton(regEx);
-                DFAutomaton dfAutomaton = new DFAutomaton(ndfAutomaton);
-                EgrepAutomaton egrep = new EgrepAutomaton(dfAutomaton);
-                egrep.findPatternInText(text);
-                break;
-            case 2:
-                KMP kmp = new KMP(pattern);
-                kmp.search(text);
-                break;
-            default:
-                return;
-        }
+    public void match() {
+        match(false);
     }
 
-    private int method(){
-        if(pattern.contains("(") || pattern.contains(")") || pattern.contains("*") || pattern.contains(".") || pattern.contains("|"))
-            return 1;
-        return 2;
+    public void match(boolean kmp) {
+        Egrep egrep;
+        if (kmp) {
+            egrep = new EgrepKMP(pattern);
+        } else {
+            NDFAutomaton ndfAutomaton = new NDFAutomaton(regEx);
+            DFAutomaton dfAutomaton = new DFAutomaton(ndfAutomaton);
+            egrep = new EgrepAutomaton(dfAutomaton);
+        }
+        egrep.findPatternInText(text);
     }
+
+//    private int method(){
+//        if(pattern.contains("(") || pattern.contains(")") || pattern.contains("*") || pattern.contains(".") ||
+//        pattern.contains("|"))
+//            return 1;
+//        return 2;
+//    }
 }

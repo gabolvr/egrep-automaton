@@ -26,6 +26,8 @@ public class Main {
         // filePath = "src/Tests/56667-0.txt";
         // filePath = "src/Tests/manual.txt";
 
+        boolean kmp = false;
+
         StringMatching solve = new StringMatching(pattern, filePath);
         solve.match();
       }

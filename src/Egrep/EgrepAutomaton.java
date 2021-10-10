@@ -1,14 +1,16 @@
 package Egrep;
 
+import Automaton.DFAutomaton;
 import Text.Text;
 
-public class EgrepAutomaton {
+public class EgrepAutomaton implements Egrep {
     public DFAutomaton dfAutomaton;
 
     public EgrepAutomaton(DFAutomaton dfAutomaton) {
         this.dfAutomaton = dfAutomaton;
     }
 
+    @Override
     public void findPatternInText(Text text) {
         for (String line : text.getText()) {
             if (findPatternInLine(line)) {
