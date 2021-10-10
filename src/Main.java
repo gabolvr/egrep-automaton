@@ -23,7 +23,7 @@ public class Main {
         filePath = args[1];
 
         Solve automaton = new Solve(pattern);
-        System.out.println(automaton);
+//        System.out.println(automaton);
         
         System.out.println("Bye");
       }

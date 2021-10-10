@@ -111,6 +111,8 @@ public class NDFAutomaton {
                 epsilonTransition.add(newEpsilonFromNode);
             }
             epsilonTransition.get(left.size() + right.size()).add(left.size() + right.size() + 1);
+
+            epsilonTransition.add(new ArrayList<>());
     
             this.automatonTransition = automatonTransition;
             this.epsilonTransition = epsilonTransition;

@@ -9,6 +9,8 @@ public class Solve {
             regEx = RegEx.parse(pattern);
             NDFAutomaton ndfAutomaton = new NDFAutomaton(regEx);
             System.out.println(ndfAutomaton);
+            DFAutomaton dfAutomaton = new DFAutomaton(ndfAutomaton);
+            System.out.println(dfAutomaton);
         } catch (Exception e) {
             System.out.println(e);
         }
