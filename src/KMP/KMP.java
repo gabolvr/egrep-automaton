@@ -9,7 +9,7 @@ public class KMP {
     public KMP(String regEx){
         pattern = regEx;
         int M = regEx.length();
-        int R = 256;
+        int R = 256; // ASCII
         dfa = new int[R][M];
         dfa[regEx.charAt(0)][0] = 1;
         for (int X=0, j=1; j<M; ++j){
@@ -21,8 +21,7 @@ public class KMP {
     }
 
     public void search(Text text){
-        for (int lineIndex=0; lineIndex<text.getSize(); ++lineIndex){
-            String line = text.getLine(lineIndex);
+        for (String line : text.getText()) {
             int i, j, N = line.length(), M = pattern.length();
             for (i=0, j=0; i<N && j<M; ++i){
                 j = dfa[line.charAt(i)][j];

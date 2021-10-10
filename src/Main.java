@@ -12,6 +12,9 @@ public class Main {
             System.exit(0);
         }
 
+        pattern = args[0];
+        filePath = args[1];
+
         // Scanner scanner = new Scanner(System.in);
         // System.out.print("regEx: ");
         // pattern = scanner.nextLine();
@@ -19,8 +22,7 @@ public class Main {
         // filePath = scanner.nextLine();
         // scanner.close();
 
-        pattern = args[0];
-        filePath = args[1];
+        
 
         // pattern = "(egrep)";
         // filePath = "src/Tests/56667-0.txt";

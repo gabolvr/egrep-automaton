@@ -26,10 +26,6 @@ public class Text {
         return text;
     }
 
-    public String getLine(int index) {
-        return text.get(index);
-    }
-
     public int getSize() {
         return text.size();
     }

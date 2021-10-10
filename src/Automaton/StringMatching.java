@@ -25,11 +25,9 @@ public class StringMatching {
         switch(method()){
             case 1: // war machine
                 NDFAutomaton ndfAutomaton = new NDFAutomaton(regEx);
-                System.out.println(ndfAutomaton);
                 DFAutomaton dfAutomaton = new DFAutomaton(ndfAutomaton);
-                System.out.println(dfAutomaton);
                 EgrepAutomaton egrep = new EgrepAutomaton(dfAutomaton);
-                egrep.findPatternInText(new Text("tests/babylon.txt"));
+                egrep.findPatternInText(text);
                 break;
             case 2:
                 KMP kmp = new KMP(pattern);
@@ -41,6 +39,8 @@ public class StringMatching {
     }
 
     private int method(){
-        return 1;
+        if(pattern.contains("(") || pattern.contains(")") || pattern.contains("*") || pattern.contains(".") || pattern.contains("|"))
+            return 1;
+        return 2;
     }
 }
