@@ -24,9 +24,9 @@ public class RegEx {
     public static RegExTree parse(String pattern) throws Exception {
         regEx = pattern;
         //BEGIN DEBUG: set conditionnal to true for debug example
-        if (false) throw new Exception();
-        RegExTree example = exampleAhoUllman();
-        if (false) return example;
+        // if (false) throw new Exception();
+        // RegExTree example = exampleAhoUllman();
+        // if (false) return example;
         //END DEBUG
 
         ArrayList<RegExTree> result = new ArrayList<RegExTree>();
