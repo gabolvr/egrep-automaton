@@ -1,0 +1,15 @@
+A variety of -grep implementations are available in many operating systems and software development environments.[11] Early variants included egrep and fgrep, introduced in Version 7 Unix.[10] The "egrep" variant supports an extended regular expression syntax added by Alfred Aho after Ken Thompson's original regular expression implementation.[12] The "fgrep" variant searches for any of a list of fixed strings using the Aho-Corasick string matching algorithm.[13] Binaries of these variants persist in most modern systems, usually linking to grep; however, using these binaries has been deprecated in favor of using the -E and -F command-line switches of grep instead.[14]
+
+Other commands contain the word "grep" to indicate they are search tools, typically ones that rely on regular expression matches. The pgrep utility, for instance, displays the processes whose names match a given regular expression.[15]
+
+In the Perl programming language, grep is the name of the built-in function that finds elements in a list that satisfy a certain property.[16] This higher-order function is typically named filter or where in other languages.
+
+The pcregrep command is an implementation of grep that uses Perl regular expression syntax.[17] Similar functionality can be invoked in the GNU version of grep with the -P flag.[18]
+
+Ports of grep (within Cygwin and GnuWin32, for example) also run under Microsoft Windows. Some versions of Windows feature the similar qgrep or findstr command.[19]
+
+A grep command is also part of ASCII's MSX-DOS2 Tools for MSX-DOS version 2.[20]
+
+The grep, egrep, and fgrep commands have also been ported to the IBM i operating system.[21]
+
+The software Adobe InDesign has functions GREP (since CS3 version (2007)[22]), in the find/change dialog box[23] "GREP" tab, and introduced with InDesign CS4[24] in paragraph styles[25] "GREP styles". 

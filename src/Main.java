@@ -22,9 +22,11 @@ public class Main {
         pattern = args[0];
         filePath = args[1];
 
-        Solve automaton = new Solve(pattern);
-//        System.out.println(automaton);
-        
-        System.out.println("Bye");
+        // pattern = "(egrep)";
+        // filePath = "src/Tests/56667-0.txt";
+        // filePath = "src/Tests/manual.txt";
+
+        StringMatching test = new StringMatching(pattern, filePath);
+        test.match();
       }
 }

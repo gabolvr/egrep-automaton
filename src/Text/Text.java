@@ -11,17 +11,16 @@ public class Text {
     private ArrayList<String> text;
 
     public Text (String filePath){
-        try{
-            text = new ArrayList<>();
+        text = new ArrayList<>();
+        try{  
             File file = new File(filePath);
-            Scanner sc = new Scanner(file);
+            Scanner sc = new Scanner(file); 
             while (sc.hasNextLine()){
                 text.add(sc.nextLine());
             }
-
             sc.close();
         } catch(Exception e){
-            e.printStackTrace();
+            System.out.println(e);
             System.exit(2);
         }
     }
@@ -32,5 +31,9 @@ public class Text {
 
     public String getLine(int index) {
         return text.get(index);
+    }
+
+    public int getSize() {
+        return text.size();
     }
 }
