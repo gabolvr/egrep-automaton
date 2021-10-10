@@ -25,7 +25,9 @@ public class EgrepKMP implements Egrep {
         for (String line : text.getText()) {
             int i, j, N = line.length(), M = pattern.length();
             for (i = 0, j = 0; i < N && j < M; ++i) {
-                j = dfa[line.charAt(i)][j];
+                if (line.charAt(i) < 256) {
+                    j = dfa[line.charAt(i)][j];
+                }
             }
             if (j == M)
                 System.out.println(line);
