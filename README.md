@@ -31,5 +31,5 @@ java -jar egrep-automaton.jar [-DFA] [regEx] [filePath]
 
 Exemple :
 ```shell script
-java -jar egrep-automaton.jar "S(a|g|r)+on" "tests/babylon.txt"
+java -jar egrep-automaton.jar "S(a|g|r)*on" "tests/babylon.txt"
 ```
