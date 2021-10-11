@@ -26,7 +26,7 @@ To execute, simply run
 ```shell script
 java -jar egrep-automaton.jar [-DFA] [regEx] [filePath]
 ```
-
+optional:
 - **-DFA** : Force the use of the DFA strategy only.
 
 Exemple :
