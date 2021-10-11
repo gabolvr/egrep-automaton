@@ -9,7 +9,7 @@
     - Text : file reader.
     - Main.java : run the project.
 - Tests : test files.
-- The root directory also contains the *README* file, the *build* configuration file from ```ant``` and the project report.
+- The root directory also contains the *README* file, the *build* configuration file from ```ant```, the project report and the ```.jar``` file.
 ### Build
 
 We can compile the project by using the following ```ant``` command inside the root folder:
@@ -17,7 +17,7 @@ We can compile the project by using the following ```ant``` command inside the r
 ```
 $ ant dist
 ```
-which will create the ```.jar``` file ```egrep-automaton.jar``` in ```./dist```
+which will create the ```.jar``` file ```egrep-automaton.jar``` in the root directory.
 
 ### Execution
 
@@ -30,5 +30,5 @@ java -jar egrep-automaton.jar [-DFA] [regEx] [filePath]
 
 Exemple :
 ```shell script
-java -jar egrep-automaton.jar "S(a|g|r)+on" "../tests/babylon.txt"
+java -jar egrep-automaton.jar "S(a|g|r)+on" "tests/babylon.txt"
 ```
