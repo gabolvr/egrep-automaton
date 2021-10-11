@@ -8,6 +8,7 @@
     - RegEx : build a RegExTree (provided by the teacher).
     - Text : file reader.
     - Main.java : run the project.
+    - PerformanceTest.java : test the project.
 - Tests : test files.
 - The root directory also contains the *README* file, the *build* configuration file from ```ant```, the project report and the ```.jar``` file.
 ### Build

@@ -1,8 +1,6 @@
 import Egrep.StringMatching;
-import Text.Text;
 
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.InputStreamReader;
 
 public class PerformanceTest {
